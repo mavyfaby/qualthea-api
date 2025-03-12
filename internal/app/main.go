@@ -8,8 +8,10 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"qualthea-api/internal/app/auth"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // Main application entry point
@@ -19,6 +21,12 @@ func Run() {
 	// Hide the server banner
 	server.HideBanner = true
 	server.HidePort = true
+
+	// Setup middleware for the server
+	server.Pre(middleware.RemoveTrailingSlash())
+
+	// Setup the routes for the application
+	auth.SetupRoutes(server)
 
 	// Run the server in a goroutine
 	go func() {
