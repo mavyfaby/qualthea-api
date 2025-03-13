@@ -8,7 +8,8 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"qualthea-api/internal/app/auth"
+
+	auth "qualthea-api/internal/app/auth/api"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -26,7 +27,7 @@ func Run() {
 	server.Pre(middleware.RemoveTrailingSlash())
 
 	// Setup the routes for the application
-	auth.SetupRoutes(server)
+	auth.RegisterRoutes(server)
 
 	// Run the server in a goroutine
 	go func() {
