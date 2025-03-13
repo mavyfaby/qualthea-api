@@ -26,60 +26,60 @@ func Init() (*gorm.DB, error) {
 		),
 	}))
 
-	// Check if datbase "qualthea" exists
-	if err == nil {
-		// Create the database if it doesn't exist
-		err = db.Exec("CREATE DATABASE IF NOT EXISTS " + os.Getenv("DB_NAME")).Error
+  // If has error
+  if err != nil {
+    return nil, err
+  }
+	
+  // Create the database if it doesn't exist
+  err = db.Exec("CREATE DATABASE IF NOT EXISTS " + os.Getenv("DB_NAME")).Error
 
-		// If error
-		if err != nil {
-			return nil, err
-		}
+  // If error
+  if err != nil {
+    return nil, err
+  }
 
-		// Close the database connection
-		err = Close()
+  // Close the database connection
+  err = Close()
 
-		// If error
-		if err != nil {
-			return nil, err
-		}
+  // If error
+  if err != nil {
+    return nil, err
+  }
 
-		// Connect to the database
-		db, err = gorm.Open(mysql.New(mysql.Config{
-			DSN: fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4",
-				os.Getenv("DB_USER"),
-				os.Getenv("DB_PASS"),
-				os.Getenv("DB_HOST"),
-				os.Getenv("DB_PORT"),
-				os.Getenv("DB_NAME"),
-			),
-		}))
+  // Connect to the database
+  db, err = gorm.Open(mysql.New(mysql.Config{
+    DSN: fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4",
+      os.Getenv("DB_USER"),
+      os.Getenv("DB_PASS"),
+      os.Getenv("DB_HOST"),
+      os.Getenv("DB_PORT"),
+      os.Getenv("DB_NAME"),
+    ),
+  }))
 
-		// If error
-		if err != nil {
-			return nil, err
-		}
+  // If error
+  if err != nil {
+    return nil, err
+  }
 
-		// Set connection pool
-		sqlDB, err := db.DB()
+  // Set connection pool
+  sqlDB, err := db.DB()
 
-		// If error
-		if err != nil {
-			return nil, err
-		}
+  // If error
+  if err != nil {
+    return nil, err
+  }
 
-		// Sets the maximum number of connections in the idle connection pool.
-		sqlDB.SetMaxIdleConns(50)
-		// Sets the maximum number of open connections to the database.
-		sqlDB.SetMaxOpenConns(100)
-		// Sets the maximum amount of time a connection may be reused.
-		sqlDB.SetConnMaxLifetime(time.Hour)
+  // Sets the maximum number of connections in the idle connection pool.
+  sqlDB.SetMaxIdleConns(50)
+  // Sets the maximum number of open connections to the database.
+  sqlDB.SetMaxOpenConns(100)
+  // Sets the maximum amount of time a connection may be reused.
+  sqlDB.SetConnMaxLifetime(time.Hour)
 
-		// Return the database connection
-		return db, nil
-	}
-
-	return nil, err
+  // Return the database connection
+  return db, nil
 }
 
 // Close the database connection
