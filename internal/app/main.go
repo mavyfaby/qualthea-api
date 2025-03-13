@@ -10,6 +10,7 @@ import (
 	"os/signal"
 
 	auth "qualthea-api/internal/app/auth/api"
+	user "qualthea-api/internal/app/user/api"
 	database "qualthea-api/internal/db"
 
 	"github.com/joho/godotenv"
@@ -56,6 +57,7 @@ func Run() {
 
 	// Setup the routes for the application
 	auth.RegisterRoutes(server)
+	user.RegisterRoutes(server)
 
 	// Run the server in a goroutine
 	go func() {
