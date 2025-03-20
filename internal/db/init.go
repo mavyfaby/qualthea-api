@@ -46,7 +46,7 @@ func Init() (*sql.DB, error) {
 	}
 
 	// Close the connection to the database
-	err = db.Close()
+	err = Close()
 
 	// If there is an error closing the connection to the database, return the error
 	if err != nil {
@@ -76,7 +76,7 @@ func Init() (*sql.DB, error) {
 	return db, nil
 }
 
-// Close a database connection
+// Close the database connection
 func Close() error {
 	// If the database connection is nil
 	if db == nil {
