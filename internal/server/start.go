@@ -11,6 +11,14 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+
+	"qualthea-api/internal/db/models/category"
+	"qualthea-api/internal/db/models/user"
+
+	"qualthea-api/internal/server/handlers"
+
+	categoryDb "qualthea-api/internal/db/models/category/db"
+	userDb "qualthea-api/internal/db/models/user/db"
 )
 
 // Start the app server
@@ -27,6 +35,14 @@ func Start(db *sql.DB) {
 
 	// Get port from environment variable
 	DbPort := os.Getenv("PORT")
+
+	// Create services
+	categoryService := category.NewService(categoryDb.New(db))
+	userService := user.NewService(userDb.New(db))
+
+	// Bind handlers
+	handlers.CategoryHandler(server, categoryService)
+	handlers.UserHandler(server, userService)
 
 	// Run the server in a goroutine
 	go func() {

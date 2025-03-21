@@ -1,0 +1,17 @@
+version: "2"
+sql:
+  - engine: "mysql"
+    queries: "internal/db/models/user/query.sql"
+    schema: "internal/db/models/user/schema.sql"
+    gen:
+      go:
+        package: "user"
+        out: "internal/db/models/user/db"
+
+  - engine: "mysql"
+    queries: "internal/db/models/category/query.sql"
+    schema: "internal/db/models/category/schema.sql"
+    gen:
+      go:
+        package: "category"
+        out: "internal/db/models/category/db"
